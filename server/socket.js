@@ -4,7 +4,6 @@ module.exports = io => {
     //io.emit('update','test notification');
     socket.on('update',function(data){
       console.log('update from id:',socket.id,' msg:',data);
-      //io.emit('update',data);
       socket.broadcast.emit('update',data);
     });
   });
