@@ -10,6 +10,7 @@ import Login from './components/Login'
 import WhoAmI from './components/WhoAmI'
 import NotFound from './components/NotFound'
 import Semaphore from './components/Semaphore'
+import Draft from './components/Draft'
 
 const ExampleApp = connect(
   ({ auth }) => ({ user: auth })
@@ -31,6 +32,7 @@ render(
         <Route path="/jokes" component={Jokes} />
       </Route>
       <Route path="/semaphore" component={Semaphore} />
+      <Route path="/draft" component={Draft} />
       <Route path='*' component={NotFound} />
     </Router>
   </Provider>,
