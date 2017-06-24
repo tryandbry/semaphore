@@ -1,4 +1,4 @@
-#Semaphore
+# Semaphore
 Test project to develop socket functionality
 
 Hit (http://localhost:1337/semaphore) to test
