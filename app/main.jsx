@@ -12,6 +12,7 @@ import NotFound from './components/NotFound'
 import Semaphore from './components/Semaphore'
 import Draft from './components/Draft'
 import DraftWithSockets from './components/DraftWithSockets'
+import DraftContainer from './containers/DraftContainer'
 
 const ExampleApp = connect(
   ({ auth }) => ({ user: auth })
@@ -35,6 +36,7 @@ render(
       <Route path="/semaphore" component={Semaphore} />
       <Route path="/draft" component={Draft} />
       <Route path="/draftwithsockets" component={DraftWithSockets} />
+      <Route path="/draftredux" component={DraftContainer} />
       <Route path='*' component={NotFound} />
     </Router>
   </Provider>,
