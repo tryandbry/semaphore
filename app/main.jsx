@@ -11,6 +11,7 @@ import WhoAmI from './components/WhoAmI'
 import NotFound from './components/NotFound'
 import Semaphore from './components/Semaphore'
 import Draft from './components/Draft'
+import DraftWithSockets from './components/DraftWithSockets'
 
 const ExampleApp = connect(
   ({ auth }) => ({ user: auth })
@@ -33,6 +34,7 @@ render(
       </Route>
       <Route path="/semaphore" component={Semaphore} />
       <Route path="/draft" component={Draft} />
+      <Route path="/draftwithsockets" component={DraftWithSockets} />
       <Route path='*' component={NotFound} />
     </Router>
   </Provider>,
