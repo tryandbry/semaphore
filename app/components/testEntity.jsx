@@ -31,7 +31,7 @@ const fruitStrategy = (contentBlock,callback,contentState) => {
   const filterFn = (charMetadata) => {
     const entityKey = charMetadata.getEntity();
     console.log('entityKey:',entityKey);
-    return +entityKey === 1 ? true : false;
+    return entityKey ? true : false;
   };
   contentBlock.findEntityRanges(filterFn,callback);
 }
@@ -92,10 +92,16 @@ export default class extends React.Component {
     const rawContent = convertToRaw(this.state.editorState.getCurrentContent());
     console.log(rawContent);
     rawContent.blocks.forEach(contentBlock=>{
-      let newEntityRanges = findMatches(contentBlock.text,event.target.entityform.value,0);
+      let newEntityRanges = findMatches(contentBlock.text,event.target.entityform.value,'fruit');
       console.log('new ranges:',newEntityRanges);
-      contentBlock.entityRanges = contentBlock.entityRanges.concat(newEntityRanges);
+      contentBlock.entityRanges = newEntityRanges;
     });
+    rawContent.entityMap = {
+      fruit: {
+        type: 'fruit',
+        mutability: 'IMMUTABLE',
+      },
+    };
     console.log('after:',rawContent);
     const newContentState = convertFromRaw(rawContent);
     const newEditorState = EditorState.push(this.state.editorState,newContentState);
