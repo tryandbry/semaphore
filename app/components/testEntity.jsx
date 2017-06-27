@@ -14,7 +14,9 @@ const rawContent = {
     {
       text: 'I am a banana',
       type: 'unstyled',
-      entityRanges: [{offset: 7, length: 6, key: 'fruit'}],
+      entityRanges: [
+        {offset: 7, length: 6, key: 'fruit'}
+      ],
     },
   ],
   entityMap : {
@@ -47,6 +49,25 @@ const fruitSpan = (props) => {
   );
 }
 
+const findMatches = (str,word,entityKey) => {
+  let modstr = str;
+  let buffer = [];
+  let r = new RegExp(`\\b${word}\\b`,'i');
+  let searchResult = r.exec(modstr);
+  let start = 0;
+  while(searchResult) {
+    buffer.push({
+      offset: start + searchResult.index,
+      length: word.length,
+      key: entityKey,
+    });
+    start += searchResult.index + word.length;
+    modstr = modstr.slice(searchResult.index + word.length);
+    searchResult = r.exec(modstr);
+  } 
+  return buffer;
+}
+
 export default class extends React.Component {
   constructor(){
     super();
@@ -62,16 +83,43 @@ export default class extends React.Component {
       editorState: EditorState.createWithContent(blocks,decorator),
     };
     this.onChange = editorState => this.setState({editorState});
+    this.entitySubmit = this.entitySubmit.bind(this);
+  }
+
+  entitySubmit(event){
+    event.preventDefault();
+
+    const rawContent = convertToRaw(this.state.editorState.getCurrentContent());
+    console.log(rawContent);
+    rawContent.blocks.forEach(contentBlock=>{
+      let newEntityRanges = findMatches(contentBlock.text,event.target.entityform.value,0);
+      console.log('new ranges:',newEntityRanges);
+      contentBlock.entityRanges = contentBlock.entityRanges.concat(newEntityRanges);
+    });
+    console.log('after:',rawContent);
+    const newContentState = convertFromRaw(rawContent);
+    const newEditorState = EditorState.push(this.state.editorState,newContentState);
+    this.setState({editorState: newEditorState});
   }
 
   render () {
 
     return (
       <div>
+        <form onSubmit={this.entitySubmit}>
+          <div className="form-group">
+              <input type="text" className="form-control" id="entityform"></input>
+          </div>
+          <button type="submit" className="btn btn-default">Submit new entity</button>
+        </form>
         <Editor
           editorState={this.state.editorState}
           onChange={this.onChange}
         />
+        <button onClick={()=>console.log('log state:',convertToRaw(this.state.editorState.getCurrentContent()))}>Log</button>
+        <button onClick={()=>console.log('getEntity:',
+          this.state.editorState.getCurrentContent().getLastCreatedEntityKey()
+        )}>getEntity</button>
       </div>
     );
   }
