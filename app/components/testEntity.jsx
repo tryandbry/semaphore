@@ -6,6 +6,7 @@ import {
   ContentState,
   Editor,
   Entity,
+  SelectionState,
   EditorState,
 } from 'draft-js';
 
@@ -50,6 +51,7 @@ const fruitSpan = (props) => {
 }
 
 const findMatches = (str,word,entityKey) => {
+  if(!word || typeof word != "string" || word.length === 0) return [];
   let modstr = str;
   let buffer = [];
   let r = new RegExp(`\\b${word}\\b`,'i');
@@ -126,6 +128,9 @@ export default class extends React.Component {
         <button onClick={()=>console.log('getEntity:',
           this.state.editorState.getCurrentContent().getLastCreatedEntityKey()
         )}>getEntity</button>
+        <button onClick={()=>console.log('selectionState:',
+          SelectionState.createEmpty()
+        )}>createSelection</button>
       </div>
     );
   }
