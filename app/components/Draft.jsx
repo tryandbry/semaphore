@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { Editor, EditorState, RichUtils } from 'draft-js';
+import { Editor, EditorState, RichUtils, convertToRaw } from 'draft-js';
 
 export default class MyEditor extends React.Component {
   constructor(){
@@ -9,6 +9,7 @@ export default class MyEditor extends React.Component {
     this.onChange = editorState => this.setState({editorState});
     this.handleKeyCommand = this.handleKeyCommand.bind(this);
     this._onBoldClick = this._onBoldClick.bind(this);
+    this._logState = this._logState.bind(this);
   }
 
   handleKeyCommand(command){
@@ -29,11 +30,17 @@ export default class MyEditor extends React.Component {
     ));
   }
 
+  _logState(){
+    let contentState = this.state.editorState.getCurrentContent();
+    console.log(convertToRaw(contentState));
+  }
+
   render(){
 
     return (
       <div>
         <button onClick={this._onBoldClick}>bold</button>
+        <button onClick={this._logState}>Log State</button>
         <Editor
           editorState={this.state.editorState}
           handleKeyCommand={this.handleKeyCommand}

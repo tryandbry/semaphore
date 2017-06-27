@@ -13,6 +13,9 @@ import Semaphore from './components/Semaphore'
 import Draft from './components/Draft'
 import DraftWithSockets from './components/DraftWithSockets'
 import DraftContainer from './containers/DraftContainer'
+import TweetEditorExample from './examples/tweet'
+import EntityEditorExample from './examples/entity'
+import testEntity from './components/testEntity'
 
 const ExampleApp = connect(
   ({ auth }) => ({ user: auth })
@@ -36,7 +39,10 @@ render(
       <Route path="/semaphore" component={Semaphore} />
       <Route path="/draft" component={Draft} />
       <Route path="/draftwithsockets" component={DraftWithSockets} />
-      <Route path="/draftredux" component={DraftContainer} />
+      <Route path="/draftredux/:roomId" component={DraftContainer} />
+      <Route path="/example/tweet" component={TweetEditorExample} />
+      <Route path="/example/entity" component={EntityEditorExample} />
+      <Route path="/test/entity" component={testEntity} />
       <Route path='*' component={NotFound} />
     </Router>
   </Provider>,
